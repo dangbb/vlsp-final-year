@@ -10,7 +10,7 @@ class Document:
         self.cluster_idx: int = cluster_idx
         self.idx: int = idx
         self.title: str = title
-        self.anchor_text: List[str] = anchor_text.split('\n')
+        self.anchor_text: str = anchor_text
         self.raw_text: List[str] = raw_text.split('\n')
 
         self.preprocessed_text: List[str] = []  # preprocessed sentences (convert ellipsis)
