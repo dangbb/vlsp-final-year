@@ -162,6 +162,4 @@ def load_cluster(path: str) -> Dataset:
                 ))
 
             dataset.add(cluster)
-            if cluster_id > 5:
-                break
     return dataset
