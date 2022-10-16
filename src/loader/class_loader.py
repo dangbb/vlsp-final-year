@@ -131,7 +131,7 @@ class Dataset:
         self.clusters.append(cluster)
 
 
-def load_cluster(path: str) -> Dataset:
+def load_cluster(path: str, n_cluster: int = -1) -> Dataset:
     dataset = Dataset()
 
     with open(path, 'r') as json_file:
@@ -162,4 +162,7 @@ def load_cluster(path: str) -> Dataset:
                 ))
 
             dataset.add(cluster)
+
+            if cluster_id == n_cluster:
+                break
     return dataset
