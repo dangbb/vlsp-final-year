@@ -10,27 +10,44 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 from sumy.utils import get_stop_words
 
-from src.config.config import Config
+from src.config.config import Config, ModelConfig, load_config_from_json
 from src.model.model import Model
 
 LANGUAGE = "vietnamese"
 SENTENCES_COUNT = 2
 
 
+def extracter(sents: List[str], scores: List[float], n_sent: int) -> List[str]:
+    assert len(sents) == len(scores), "Sent and score len are difference, {} != {}".format(
+        len(sents),
+        len(scores)
+    )
+
+    if n_sent > len(sents):
+        n_sent = len(sents)
+
+    group = [(sents[i], scores[i]) for i in range(len(sents))]
+
+    group = sorted(group, key=lambda x: x[1], reverse=True)
+
+    return [group[i][0] for i in range(n_sent)]
+
+
 class TextrankCustom(Model):
-    def __init__(self, config: Config):
+    def __init__(self, config: ModelConfig):
         super(TextrankCustom, self).__init__()
         self.config = config
         self.LANGUAGE: str = "vietnamese"
 
-        self.SENTENCES_COUNT = config.model_config['params']
+        self.SENTENCES_COUNT = config.params
 
         self.tokenizer: sumy.nlp.tokenizers.Tokenizer = Tokenizer(LANGUAGE)
         self.summarizer: sumy.summarizers.text_rank = TextRankSummarizer()
         self.summarizer.stop_words = get_stop_words(LANGUAGE)
 
     def predict(self, cluster: Cluster) -> (List[str], List[float]):
-        parser: PlaintextParser = PlaintextParser.from_string('  .  '.join(cluster.get_all_sents()), self.tokenizer)
+        all_sents = cluster.get_all_sents()
+        parser: PlaintextParser = PlaintextParser.from_string('  .  '.join(all_sents), self.tokenizer)
 
         sent_count = len(parser.document.sentences)
         for SENT_COUNT in self.SENTENCES_COUNT:
@@ -39,24 +56,12 @@ class TextrankCustom(Model):
             else:
                 sent_count = min(int(SENT_COUNT), sent_count)
 
-        if self.config.DEBUG:
-            all_sents = cluster.get_all_sents()
-            print(">> Print all short sent (len < 5)")
-            for sent in all_sents:
-                if len(sent) < 5:
-                    print(sent)
-            print(">> Print first difference")
-            for i, sent in enumerate(all_sents):
-                if sent != str(parser.document.sentences[0]):
-                    print("Difference at pos: ", i, sent, parser.document.sentences[0])
-                    break
+        _, ratings = self.summarizer(parser.document, sent_count)
 
-        sentences, ratings = self.summarizer(parser.document, sent_count)
-
-        assert len(parser.document.sentences) == len(cluster.get_all_sents()), \
+        assert len(parser.document.sentences) == len(all_sents), \
             "N Sent in doc diff from N sent in cluster, {} != {}".format(
                 len(parser.document.sentences),
-                len(cluster.get_all_sents()),
+                len(all_sents),
             )
         assert len(parser.document.sentences) == len(ratings), \
             "N Sent in doc diff from rating length, {} != {}".format(
@@ -64,8 +69,7 @@ class TextrankCustom(Model):
                 len(ratings)
             )
 
-        sentences = [str(sent) for sent in sentences]
-        return sentences, list(ratings.values())
+        return extracter(all_sents, list(ratings.values()), sent_count), list(ratings.values())
 
 
 if __name__ == '__main__':
@@ -74,9 +78,14 @@ if __name__ == '__main__':
     SOURCE = 'sent_splitted_token'
 
     dataset = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl"
+        "/home/dang/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
+        1,
     )
     dataset.set_source(SOURCE)
 
-    textrank = TextrankCustom(8, .1)
-    textrank.predict(dataset.clusters[0])
+    config = load_config_from_json()
+    textrank = TextrankCustom(config.models[0])
+    sents, rates = textrank.predict(dataset.clusters[0])
+
+    print("** Predicted sent: \n", sents)
+    print("** Rating: ", len(rates))
