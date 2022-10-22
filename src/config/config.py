@@ -22,6 +22,9 @@ class ModelConfig:
         self.n_words = 0
         self.sigma = 0
         self.embedding: EmbeddingConfig = EmbeddingConfig()
+        self.training_required = False
+        self.document_convention = ""
+        self.source = ""
 
 
 class Config:
@@ -29,7 +32,6 @@ class Config:
         self.name: str = ''
         self.train_path: str = ''
         self.valid_path: str = ''
-        self.source: str = ''
         self.result_path = ''
 
         self.eval_config = {}
@@ -58,6 +60,7 @@ def parse_embedding_config(data) -> EmbeddingConfig:
 
 def parse_model_config(data) -> ModelConfig:
     model_config = ModelConfig()
+    model_config.source = data['source']
     model_config.name = data['name']
     model_config.count_word = data['count_word']
     model_config.params = data['params']
@@ -66,6 +69,8 @@ def parse_model_config(data) -> ModelConfig:
     model_config.embedding = parse_embedding_config(
         data['embedding']
     )
+    model_config.training_required = data['training_required']
+    model_config.document_convention = data['document_convention']
     return model_config
 
 
@@ -80,7 +85,6 @@ def load_config_from_json(
         config.name = data['name']
         config.train_path = data['train_path']
         config.valid_path = data['valid_path']
-        config.source = data['source']
         config.models = [
             parse_model_config(model_data)
             for model_data in data['models']

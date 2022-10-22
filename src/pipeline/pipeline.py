@@ -37,7 +37,7 @@ class Pipeline:
         print("Start training in pipeline: ", self.config.name)
 
         # init
-        dataset.set_source(self.config.source)
+        dataset.set_source(self.model_config.source)
         if self.config.reset:
             self.train_df = pd.DataFrame(columns=[
                 'cluster_id',
@@ -55,10 +55,11 @@ class Pipeline:
                 'summary',
             ])
 
-        run_name = '{}_{}_{}'.format(
+        run_name = '{}_{}_{}_{}'.format(
             self.config.name,
             self.model_config.name,
             '_'.join(map(str, self.model_config.params)),
+            self.model_config.document_convention,
         )
         training_run_name = run_name + '_train'
         validate_run_name = run_name + '_valid'
@@ -76,6 +77,10 @@ class Pipeline:
 
         # create evaluator
         evaluator = create_evaluator(self.eval_config)
+
+        if self.model_config.training_required:
+            # is training_required, model is training on full dataset before predicting
+            model.training(dataset)
 
         # running
         try:
@@ -184,15 +189,18 @@ if __name__ == '__main__':
     train_set = load_cluster(
         config.train_path
     )
-    train_set.set_source(config.source)
-
     valid_set = load_cluster(
         config.valid_path
     )
-    valid_set.set_source(config.source)
 
     pipeline0 = Pipeline(config, 0)
     pipeline0.training(train_set, valid_set)
 
     pipeline0 = Pipeline(config, 1)
+    pipeline0.training(train_set, valid_set)
+
+    pipeline0 = Pipeline(config, 2)
+    pipeline0.training(train_set, valid_set)
+
+    pipeline0 = Pipeline(config, 3)
     pipeline0.training(train_set, valid_set)

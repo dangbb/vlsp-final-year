@@ -1,5 +1,6 @@
 from src.config.config import Config, ModelConfig, EvalConfig
 from src.evaluate.rouge_evaluator import PipRouge
+from src.model.lexrankCustom import Lexrank
 from src.model.mmr import MMR
 from src.model.textrank import TextrankCustom
 
@@ -16,6 +17,9 @@ def create_model(config: ModelConfig):
         return model
     elif config.name == 'mmr':
         model = MMR(config)
+        return model
+    elif config.name == 'lexrank':
+        model = Lexrank(config)
         return model
     else:
         raise Exception('Unsupported model {}'.format(config.name))
