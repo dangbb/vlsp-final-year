@@ -5,3 +5,5 @@
 /external/sentence_transformer/vncorenlp/
 /dataset/wordnet/
 /external/sentence_transformer/vn_sbert_deploy/
+/external/sentence_transformer
+*.pyc

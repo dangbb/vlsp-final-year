@@ -12,5 +12,5 @@ def stopword_reader(path: str) -> List[str]:
     return [word.strip('\n') for word in words]
 
 if __name__ == "__main__":
-    words = stopword_reader("/home/dang/vlsp-final-year/data/stopword /vietnamese.txt")
+    words = stopword_reader("/home/hvn/vlsp-final-year/data/stopword /vietnamese.txt")
     print(words[:4])

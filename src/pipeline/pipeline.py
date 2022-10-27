@@ -187,10 +187,10 @@ if __name__ == '__main__':
     config = load_config_from_json()
 
     train_set = load_cluster(
-        config.train_path
+        config.train_path, 1
     )
     valid_set = load_cluster(
-        config.valid_path
+        config.valid_path, 1
     )
 
     pipeline0 = Pipeline(config, 0)
