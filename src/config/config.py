@@ -32,6 +32,7 @@ class Config:
         self.name: str = ''
         self.train_path: str = ''
         self.valid_path: str = ''
+        self.test_path: str = ''
         self.result_path = ''
 
         self.eval_config = {}
@@ -85,6 +86,7 @@ def load_config_from_json(
         config.name = data['name']
         config.train_path = data['train_path']
         config.valid_path = data['valid_path']
+        config.test_path = data['test_path']
         config.models = [
             parse_model_config(model_data)
             for model_data in data['models']

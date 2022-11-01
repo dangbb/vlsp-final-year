@@ -12,6 +12,7 @@ from src.utils.factory import create_model, create_evaluator
 
 class Pipeline:
     def __init__(self, config: Config, model_idx: int = 0):
+        self.local_result_path = None
         self.config = config
         self.train_df = pd.DataFrame(columns=[
             'cluster_id',
@@ -28,11 +29,36 @@ class Pipeline:
         self.model_config = config.models[model_idx]
         self.eval_config = config.eval_config
 
+    def save_result_txt(self, res_name):
+        """
+        Save the result of the pipeline in a txt file
+        :return: none
+        """
+        result_series = self.test_df["summary"]
+        with open(os.path.join(self.local_result_path, "results.txt"), "w") as f:
+            for summary in result_series:
+                f.write(summary)
+                f.write('\n')
+
+    def get_run_name(self):
+        run_name = '{}_{}_{}_{}'.format(
+            self.config.name,
+            self.model_config.name,
+            '_'.join(map(str, self.model_config.params)),
+            self.model_config.document_convention,
+        )
+
+        return run_name
+
+    def create_result_directory(self):
+        self.local_result_path = os.path.join(self.config.result_path, self.get_run_name())
+        if not os.path.exists(self.local_result_path):
+            os.mkdir(self.local_result_path)
+
     def training(
             self,
             dataset: Dataset,
             valid_dataset: Dataset = None,
-            test_dataset: Dataset = None
     ):
         print("Start training in pipeline: ", self.config.name)
 
@@ -55,19 +81,11 @@ class Pipeline:
                 'summary',
             ])
 
-        run_name = '{}_{}_{}_{}'.format(
-            self.config.name,
-            self.model_config.name,
-            '_'.join(map(str, self.model_config.params)),
-            self.model_config.document_convention,
-        )
+        run_name = self.get_run_name()
         training_run_name = run_name + '_train'
         validate_run_name = run_name + '_valid'
-        testing_run_name = run_name + '_test'
 
-        local_result_path = os.path.join(self.config.result_path, run_name)
-        if not os.path.exists(local_result_path):
-            os.mkdir(local_result_path)
+        self.create_result_directory()
 
         training_score_summary = ScoreSummary(training_run_name)
         validate_score_summary = ScoreSummary(validate_run_name)
@@ -103,10 +121,10 @@ class Pipeline:
                 )
             logging.warning("[JOB] '{}' - Training complete. Saving report.".format(training_run_name))
 
-            training_score_summary.save_report(local_result_path)
+            training_score_summary.save_report(self.local_result_path)
             self.train_df.to_csv(
                 os.path.join(
-                    local_result_path,
+                    self.local_result_path,
                     training_run_name + '-score.csv'
                 ),
                 index=False
@@ -137,10 +155,10 @@ class Pipeline:
 
                 logging.warning("[JOB] '{}' - Training on valid set complete. Saving report.".format(validate_run_name))
 
-                validate_score_summary.save_report(local_result_path)
+                validate_score_summary.save_report(self.local_result_path)
                 self.valid_df.to_csv(
                     os.path.join(
-                        local_result_path,
+                        self.local_result_path,
                         validate_run_name + '-score.csv'
                     ),
                     index=False
@@ -151,34 +169,43 @@ class Pipeline:
                 logging.warning("[JOB] '{}' - Valid dataset not found.".format(validate_run_name))
 
             # evaluate in test set
-            if test_dataset is not None:
-                logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
-
-                for cluster in tqdm(test_dataset.clusters):
-                    summary, score = model.predict(cluster)
-
-                    self.test_df = self.test_df.append({
-                        'cluster_id': cluster.cluster_idx,
-                        'score': score,
-                        'summary': '.'.join(summary),
-                    }, ignore_index=True)
-
-                logging.warning("[JOB] '{}' - Predict on test complete. Saving report.".format(testing_run_name))
-
-                self.test_df.to_csv(
-                    os.path.join(
-                        local_result_path,
-                        testing_run_name + '-score.csv'
-                    ),
-                    index=False
-                )
-
-                logging.warning("[JOB] '{}' - Saving test report complete.".format(testing_run_name))
-            else:
-                logging.warning("[JOB] '{}' - Test dataset not found.".format(testing_run_name))
 
         except Exception as e:
             print("Training failed: ", e)
+
+    def predict(self, test_dataset):
+        testing_run_name = self.get_run_name() + '_test'
+        self.create_result_directory()
+
+        model = create_model(self.model_config)
+
+        if test_dataset is not None:
+            logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
+
+            for cluster in tqdm(test_dataset.clusters):
+                summary, score = model.predict(cluster)
+
+                self.test_df = self.test_df.append({
+                    'cluster_id': cluster.cluster_idx,
+                    'score': score,
+                    'summary': '.'.join(summary),
+                }, ignore_index=True)
+
+            logging.warning("[JOB] '{}' - Predict on test complete. Saving report.".format(testing_run_name))
+
+            self.test_df.to_csv(
+                os.path.join(
+                    self.local_result_path,
+                    testing_run_name + '-score.csv'
+                ),
+                index=False
+            )
+
+            self.save_result_txt(testing_run_name)
+
+            logging.warning("[JOB] '{}' - Saving test report complete.".format(testing_run_name))
+        else:
+            logging.warning("[JOB] '{}' - Test dataset not found.".format(testing_run_name))
 
 
 if __name__ == '__main__':
@@ -186,15 +213,18 @@ if __name__ == '__main__':
 
     config = load_config_from_json()
 
-    train_set = load_cluster(
-        config.train_path, 50
-    )
-    valid_set = load_cluster(
-        config.valid_path, 50
+    # train_set = load_cluster(
+    #     config.train_path
+    # )
+    # valid_set = load_cluster(
+    #     config.valid_path
+    # )
+    test_set = load_cluster(
+        config.test_path
     )
 
     pipeline0 = Pipeline(config, 0)
-    pipeline0.training(train_set, valid_set)
+    pipeline0.predict(test_set)
 
     # pipeline0 = Pipeline(config, 1)
     # pipeline0.training(train_set, valid_set)

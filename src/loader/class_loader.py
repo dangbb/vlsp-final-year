@@ -146,9 +146,15 @@ def load_cluster(path: str, n_cluster: int = -1) -> Dataset:
 
             result = json.loads(json_str)
 
+            summary = ''
+            try:
+                summary = result['summary']
+            except KeyError:
+                pass
+
             cluster = Cluster(
                 cluster_idx=cluster_id + 1,
-                summary=result['summary'],
+                summary=summary,
                 category=result['category'],
             )
 
