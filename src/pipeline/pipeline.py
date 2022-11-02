@@ -58,7 +58,7 @@ class Pipeline:
     def training(
             self,
             dataset: Dataset,
-            valid_dataset: Dataset = None,
+            valid_dataset: Dataset = None, id_left=None, id_right=None,
     ):
         print("Start training in pipeline: ", self.config.name)
 
@@ -103,6 +103,7 @@ class Pipeline:
         # running
         try:
             logging.warning("[JOB] '{}' - Start training.".format(training_run_name))
+
             for cluster in tqdm(dataset.clusters):
                 summary, score = model.predict(cluster)
 
@@ -173,8 +174,10 @@ class Pipeline:
         except Exception as e:
             print("Training failed: ", e)
 
-    def predict(self, test_dataset):
+    def predict(self, test_dataset, save_name=None):
         testing_run_name = self.get_run_name() + '_test'
+        if save_name is not None:
+            testing_run_name += save_name + '_'
         self.create_result_directory()
 
         model = create_model(self.model_config)
@@ -213,19 +216,19 @@ if __name__ == '__main__':
 
     config = load_config_from_json()
 
-    # train_set = load_cluster(
-    #     config.train_path, 7
-    # )
+    train_set = load_cluster(
+        config.train_path
+    )
     # valid_set = load_cluster(
     #     config.valid_path
     # )
-    test_set = load_cluster(
-        config.test_path
-    )
+    # test_set = load_cluster(
+    #     config.test_path
+    # )
 
     pipeline0 = Pipeline(config, 0)
-    # pipeline0.training(train_set, valid_set)
-    pipeline0.predict(test_set)
+    pipeline0.training(train_set[0:50], save_name='0_50')
+    # pipeline0.predict(test_set)
 
     # pipeline0 = Pipeline(config, 1)
     # pipeline0.training(train_set, valid_set)
