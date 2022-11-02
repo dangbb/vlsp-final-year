@@ -216,19 +216,19 @@ if __name__ == '__main__':
 
     config = load_config_from_json()
 
-    train_set = load_cluster(
-        config.train_path
-    )
+    # train_set = load_cluster(
+    #     config.train_path
+    # )
     # valid_set = load_cluster(
     #     config.valid_path
     # )
-    # test_set = load_cluster(
-    #     config.test_path
-    # )
+    test_set = load_cluster(
+        config.test_path
+    )
 
     pipeline0 = Pipeline(config, 0)
-    pipeline0.training(train_set[0:50], save_name='0_50')
-    # pipeline0.predict(test_set)
+    # pipeline0.training(train_set)
+    pipeline0.predict(test_set)
 
     # pipeline0 = Pipeline(config, 1)
     # pipeline0.training(train_set, valid_set)
