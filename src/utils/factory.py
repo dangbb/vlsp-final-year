@@ -2,6 +2,7 @@ from src.config.config import Config, ModelConfig, EvalConfig
 from src.evaluate.rouge_evaluator import PipRouge
 from src.model.lexrankCustom import Lexrank
 from src.model.mmr import MMR
+from src.model.pyramidExtraction import PyramidExt
 from src.model.textrank import TextrankCustom
 from src.model.viT5 import ViT5
 
@@ -24,6 +25,9 @@ def create_model(config: ModelConfig):
         return model
     elif config.name == 'vit5':
         model = ViT5(config)
+        return model
+    elif config.name == 'pyramid':
+        model = PyramidExt(config)
         return model
     else:
         raise Exception('Unsupported model {}'.format(config.name))

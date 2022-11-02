@@ -26,6 +26,7 @@ class TextContainer:
                  raw_text: List[str],
                  ):
 
+        self.raw_str = raw_text
         self.raw_text = raw_text.split('\n')
 
         tokenized_text: List[str] = []

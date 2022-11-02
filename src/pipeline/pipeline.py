@@ -29,7 +29,7 @@ class Pipeline:
         self.model_config = config.models[model_idx]
         self.eval_config = config.eval_config
 
-    def save_result_txt(self, res_name):
+    def save_result_txt(self):
         """
         Save the result of the pipeline in a txt file
         :return: none
@@ -201,7 +201,7 @@ class Pipeline:
                 index=False
             )
 
-            self.save_result_txt(testing_run_name)
+            self.save_result_txt()
 
             logging.warning("[JOB] '{}' - Saving test report complete.".format(testing_run_name))
         else:
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     config = load_config_from_json()
 
     # train_set = load_cluster(
-    #     config.train_path
+    #     config.train_path, 7
     # )
     # valid_set = load_cluster(
     #     config.valid_path
@@ -224,6 +224,7 @@ if __name__ == '__main__':
     )
 
     pipeline0 = Pipeline(config, 0)
+    # pipeline0.training(train_set, valid_set)
     pipeline0.predict(test_set)
 
     # pipeline0 = Pipeline(config, 1)
