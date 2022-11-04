@@ -32,7 +32,7 @@ class RougeScore:
         self.rougeL: RougeN = rougeL
 
     def __str__(self):
-        return "Rouge 1:\n{}\nRouge 2:\n{}\nRouge 3:\n{}".format(self.rouge1, self.rouge2, self.rougeL)
+        return "Rouge 1:\n{}\nRouge 2:\n{}\nRouge L:\n{}".format(self.rouge1, self.rouge2, self.rougeL)
 
 
 class PipRouge:

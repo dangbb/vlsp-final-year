@@ -57,6 +57,8 @@ class MMRSummarizer:
                     best_score = score
                     best_sent_idx = i
 
+            if best_sent_idx == -1:
+                break
             chosen_sentences.append(best_sent_idx)
             unchosen_sentences.remove(best_sent_idx)
             scores[best_sent_idx] = 1.0

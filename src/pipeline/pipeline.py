@@ -37,7 +37,6 @@ class Pipeline:
         print("Start training in pipeline: ", self.config.name)
 
         # init
-        dataset.set_source(self.model_config.source)
         if self.config.reset:
             self.train_df = pd.DataFrame(columns=[
                 'cluster_id',
@@ -78,41 +77,44 @@ class Pipeline:
         # create evaluator
         evaluator = create_evaluator(self.eval_config)
 
-        if self.model_config.training_required:
+        if self.model_config.training_required and dataset is not None:
             # is training_required, model is training on full dataset before predicting
             model.training(dataset)
 
         # running
         try:
             logging.warning("[JOB] '{}' - Start training.".format(training_run_name))
-            for cluster in tqdm(dataset.clusters):
-                summary, score = model.predict(cluster)
+            if dataset is not None:
 
-                self.train_df = self.train_df.append({
-                    'cluster_id': cluster.cluster_idx,
-                    'score': score,
-                    'summary': '.'.join(summary),
-                }, ignore_index=True)
+                dataset.set_source(self.model_config.source)
+                for cluster in tqdm(dataset.clusters):
+                    summary, score = model.predict(cluster)
 
-                training_score_summary.add_score(
-                    cluster.cluster_idx,
-                    evaluator(
-                        '.'.join(summary),
-                        '.'.join(cluster.get_summary()),
+                    self.train_df = self.train_df.append({
+                        'cluster_id': cluster.cluster_idx,
+                        'score': score,
+                        'summary': '.'.join(summary),
+                    }, ignore_index=True)
+
+                    training_score_summary.add_score(
+                        cluster.cluster_idx,
+                        evaluator(
+                            '.'.join(summary),
+                            '.'.join(cluster.get_summary()),
+                        )
                     )
+                logging.warning("[JOB] '{}' - Training complete. Saving report.".format(training_run_name))
+
+                training_score_summary.save_report(local_result_path)
+                self.train_df.to_csv(
+                    os.path.join(
+                        local_result_path,
+                        training_run_name + '-score.csv'
+                    ),
+                    index=False
                 )
-            logging.warning("[JOB] '{}' - Training complete. Saving report.".format(training_run_name))
 
-            training_score_summary.save_report(local_result_path)
-            self.train_df.to_csv(
-                os.path.join(
-                    local_result_path,
-                    training_run_name + '-score.csv'
-                ),
-                index=False
-            )
-
-            logging.warning("[JOB] '{}' - Saving report complete.".format(run_name))
+                logging.warning("[JOB] '{}' - Saving report complete.".format(run_name))
 
             # evaluate in valid set
             if valid_dataset is not None:
@@ -180,27 +182,121 @@ class Pipeline:
         except Exception as e:
             print("Training failed: ", e)
 
+    def predict(self, test_dataset, save_name=None):
+        testing_run_name = self.get_run_name() + '_test'
+        if save_name is not None:
+            testing_run_name += save_name + '_'
+        self.create_result_directory()
+
+        model = create_model(self.model_config)
+
+        if test_dataset is not None:
+            logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
+
+            for cluster in tqdm(test_dataset.clusters):
+                summary, score = model.predict(cluster)
+
+                self.test_df = self.test_df.append({
+                    'cluster_id': cluster.cluster_idx,
+                    'score': score,
+                    'summary': '.'.join(summary),
+                }, ignore_index=True)
+
+            logging.warning("[JOB] '{}' - Predict on test complete. Saving report.".format(testing_run_name))
+
+            self.test_df.to_csv(
+                os.path.join(
+                    self.local_result_path,
+                    testing_run_name + '-score.csv'
+                ),
+                index=False
+            )
+
+            self.save_result_txt()
+
+            logging.warning("[JOB] '{}' - Saving test report complete.".format(testing_run_name))
+        else:
+            logging.warning("[JOB] '{}' - Test dataset not found.".format(testing_run_name))
+
+    def create_result_directory(self):
+        self.local_result_path = os.path.join(self.config.result_path, self.get_run_name())
+        if not os.path.exists(self.local_result_path):
+            os.mkdir(self.local_result_path)
+
+    def save_result_txt(self):
+        """
+        Save the result of the pipeline in a txt file
+        :return: none
+        """
+        print("Start write to txt")
+        result_series = self.test_df["summary"]
+        with open(os.path.join(self.local_result_path, "results.txt"), "w") as f:
+            for summary in result_series:
+                f.write(summary)
+                f.write('\n')
+        print("Done write to txt")
+
+    def get_run_name(self):
+        run_name = '{}_{}_{}_{}'.format(
+            self.config.name,
+            self.model_config.name,
+            '_'.join(map(str, self.model_config.params)),
+            self.model_config.document_convention,
+        )
+
+        return run_name
+
 
 if __name__ == '__main__':
     from src.loader.class_loader import load_cluster
 
     config = load_config_from_json()
 
-    train_set = load_cluster(
-        config.train_path
-    )
+    # train_set = load_cluster(
+    #     config.train_path
+    # )
+    train_set = None
+
     valid_set = load_cluster(
-        config.valid_path
+        config.valid_path,
+    )
+    # valid_set = None
+    test_set = load_cluster(
+        "/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"
     )
 
-    pipeline0 = Pipeline(config, 0)
-    pipeline0.training(train_set, valid_set)
+    pipeline0 = Pipeline(config, 11)
+    try:
+        pipeline0.training(train_set, valid_set)
+    except Exception as e:
+        print(e)
+    pipeline0.predict(test_set)
 
-    pipeline0 = Pipeline(config, 1)
-    pipeline0.training(train_set, valid_set)
+    pipeline0 = Pipeline(config, 10)
+    try:
+        pipeline0.training(train_set, valid_set)
+    except Exception as e:
+        print(e)
+    pipeline0.predict(test_set)
 
-    pipeline0 = Pipeline(config, 2)
-    pipeline0.training(train_set, valid_set)
+    pipeline0 = Pipeline(config, 9)
+    try:
+        pipeline0.training(train_set, valid_set)
+    except Exception as e:
+        print(e)
+    pipeline0.predict(test_set)
 
-    pipeline0 = Pipeline(config, 3)
-    pipeline0.training(train_set, valid_set)
+    # pipeline0.predict(test_set)
+
+    # pipeline0 = Pipeline(config, 3)
+    # pipeline0.training(train_set, valid_set, test_set)
+
+    #
+    # pipeline0 = Pipeline(config, 1)
+    # pipeline0.training(train_set, valid_set)
+    #
+    # pipeline0 = Pipeline(config, 2)
+    # pipeline0.training(train_set, valid_set)
+    #
+    # pipeline0 = Pipeline(config, 3)
+    # pipeline0.training(train_set, valid_set)

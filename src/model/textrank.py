@@ -10,7 +10,7 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 from sumy.utils import get_stop_words
 
-from src.config.config import Config, ModelConfig, load_config_from_json
+from src.config.config import ModelConfig, load_config_from_json
 from src.model.model import Model
 
 LANGUAGE = "vietnamese"
@@ -30,7 +30,7 @@ def extracter(sents: List[str], scores: List[float], n_sent: int) -> List[str]:
 
     group = sorted(group, key=lambda x: x[1], reverse=True)
 
-    return [group[i][0] for i in range(n_sent)]
+    return [group[i][0] for i in range(min(n_sent, len(group)))]
 
 
 class TextrankCustom(Model):
