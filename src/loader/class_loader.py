@@ -106,14 +106,26 @@ class Document:
         self.idx: int = idx
         self.title: str = title
         self.anchor_text: str = anchor_text
+        self.source = 'raw_text'
 
         self.text_container: TextContainer = TextContainer(raw_text)
 
     def __str__(self):
         return f"Document {self.idx} - Cluster {self.cluster_idx}\n" + f"Title: {self.title}\n" + f"Anchor Text: {self.anchor_text}\n" + f"Raw Text:\n{self.text_container.raw_text}\n"
 
-    def tokenize(self, tokenizer):
-        self.tokenized_text = tokenizer(self.raw_text)
+    def set_source(self, new_source: str):
+        if not new_source in ['raw_text', 'tokenized_text', 'sent_splitted_text', 'sent_splitted_token']:
+            print("Unsupported source")
+        self.source = new_source
+
+    def get_all_sents(self) -> List[str]:
+        sents: List[str] = []
+
+        for sent in self.text_container.__getattribute__(self.source):
+            if sent not in sents:
+                sents.append(sent)
+
+        return sents
 
 
 class Cluster:
@@ -137,6 +149,9 @@ class Cluster:
         if not new_source in ['raw_text', 'tokenized_text', 'sent_splitted_text', 'sent_splitted_token']:
             print("Unsupported source")
         self.source = new_source
+
+        for i in range(len(self.documents)):
+            self.documents[i].set_source(new_source)
 
     def add(self, doc: Document) -> None:
         self.documents.append(doc)
