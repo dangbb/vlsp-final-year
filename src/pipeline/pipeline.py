@@ -1,8 +1,10 @@
 import logging
 import os
+import argparse
+
+from tqdm import tqdm
 
 import pandas as pd
-from tqdm import tqdm
 
 from src.config.config import Config, load_config_from_json
 from src.evaluate.rouge_evaluator import ScoreSummary
@@ -250,53 +252,70 @@ class Pipeline:
 if __name__ == '__main__':
     from src.loader.class_loader import load_cluster
 
-    config = load_config_from_json()
+    parser = argparse.ArgumentParser()
+    parser.parse_args()
+
+    parser.add_argument("--config-path", help="config path for pipeline", required=True, type=str)
+    parser.add_argument("--train-path", help="train path", type=str)
+    parser.add_argument("--valid-path", help="valid path", type=str)
+    parser.add_argument("--test-path", help="test path", type=str)
+    parser.add_argument("--model-index", help="index of model in config file", nargs="+", type=list)
+
+    args = parser.parse_args()
+
+    config_path = args.config_path
+    train_path = args.train_path
+    valid_path = args.valid_path
+    test_path = args.test_path
+
+    index_set = list(set(args.model_index))
+
+    print("Arg parse: ")
+    print("Config path: ", config_path)
+    print("Train path: ", train_path)
+    print("Valid path: ", valid_path)
+    print("Test path: ", test_path)
+    print("Index set: ", index_set)
+
+    config = load_config_from_json(config_path)
 
     # train_set = load_cluster(
     #     config.train_path
     # )
-    train_set = None
-
-    valid_set = load_cluster(
-        config.valid_path,
-    )
-    # valid_set = None
-    test_set = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"
-    )
-
-    pipeline0 = Pipeline(config, 11)
     try:
-        pipeline0.training(train_set, valid_set)
+        train_set = load_cluster(
+            train_path
+        )
+        logging.warning("[PIPELINE] - Load train set from {}. Done.".format(train_path))
     except Exception as e:
-        print(e)
-    pipeline0.predict(test_set)
+        train_set = None
+        logging.warning("[PIPELINE] - Load train set from {}. Failed. Using None.".format(train_path))
 
-    pipeline0 = Pipeline(config, 10)
     try:
-        pipeline0.training(train_set, valid_set)
+        valid_set = load_cluster(
+            valid_path
+        )
+        logging.warning("[PIPELINE] - Load valid set from {}. Done.".format(train_path))
     except Exception as e:
-        print(e)
-    pipeline0.predict(test_set)
+        valid_set = None
+        logging.warning("[PIPELINE] - Load valid set from {}. Failed. Using None.".format(train_path))
 
-    pipeline0 = Pipeline(config, 9)
     try:
-        pipeline0.training(train_set, valid_set)
+        test_set = load_cluster(
+            test_path
+        )
+        logging.warning("[PIPELINE] - Load test set from {}. Done.".format(train_path))
     except Exception as e:
-        print(e)
-    pipeline0.predict(test_set)
+        test_set = None
+        logging.warning("[PIPELINE] - Load test set from {}. Failed. Using None.".format(train_path))
 
-    # pipeline0.predict(test_set)
-
-    # pipeline0 = Pipeline(config, 3)
-    # pipeline0.training(train_set, valid_set, test_set)
-
-    #
-    # pipeline0 = Pipeline(config, 1)
-    # pipeline0.training(train_set, valid_set)
-    #
-    # pipeline0 = Pipeline(config, 2)
-    # pipeline0.training(train_set, valid_set)
-    #
-    # pipeline0 = Pipeline(config, 3)
-    # pipeline0.training(train_set, valid_set)
+    for idx in index_set:
+        try:
+            pipeline0 = Pipeline(config, idx)
+            try:
+                pipeline0.training(train_set, valid_set)
+            except Exception as e:
+                print(e)
+            pipeline0.predict(test_set)
+        except Exception as e:
+            logging.error("[PIPELINE] - Init pipeline failed, error: ", e)
