@@ -5,10 +5,13 @@ from src.model.customMLP import CustomMLP
 from src.model.lexrankBertEmbedding import LexRankBertModel
 from src.model.lexrankCustom import Lexrank
 from src.model.mmr import MMR
+from src.model.mmr_context import MMRQueryAnchorContext
 from src.model.mmr_query import MMRQuery
 from src.model.mmr_query_anchor import MMRQueryAnchor
 from src.model.mmr_query_best_title import MMRQueryBestTitle
 from src.model.random_model import RandomModel
+from src.model.sds_textrank import SDSTextrankCustom
+from src.model.sds_textrank_mmr import SDSTextrankMMRCustom
 from src.model.textrank import TextrankCustom
 
 
@@ -48,6 +51,15 @@ def create_model(config: ModelConfig):
         return model
     elif config.name == 'mmr_query_anchor':
         model = MMRQueryAnchor(config)
+        return model
+    elif config.name == 'mmr_context_2_sent':
+        model = MMRQueryAnchorContext(config)
+        return model
+    elif config.name == 'sds-textrank':
+        model = SDSTextrankCustom(config)
+        return model
+    elif config.name == 'sds-textrank-mmr':
+        model = SDSTextrankMMRCustom(config)
         return model
     else:
         raise Exception('Unsupported model {}'.format(config.name))
