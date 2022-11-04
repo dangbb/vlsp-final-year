@@ -19,12 +19,16 @@ class ModelConfig:
         self.name = ''
         self.count_word = True,
         self.params = []
+        self.net_params = []
         self.n_words = 0
         self.sigma = 0
         self.embedding: EmbeddingConfig = EmbeddingConfig()
         self.training_required = False
         self.document_convention = ""
         self.source = ""
+        ## todo: add this
+        self.model_path = ""
+        self.config = {}
 
 
 class Config:
@@ -33,6 +37,7 @@ class Config:
         self.train_path: str = ''
         self.valid_path: str = ''
         self.result_path = ''
+        self.topic_path = ''
 
         self.eval_config = {}
 
@@ -41,6 +46,14 @@ class Config:
 
         self.models: List[ModelConfig] = []
         self.embedding: EmbeddingConfig = EmbeddingConfig()
+
+        self.stopword_path = ''
+
+    @staticmethod
+    def load_config_from_json(
+            path: str = '/home/dang/vlsp-final-year/env.json'
+    ):
+        return load_config_from_json(path)
 
 
 def parse_eval_config(data) -> EvalConfig:
@@ -71,6 +84,8 @@ def parse_model_config(data) -> ModelConfig:
     )
     model_config.training_required = data['training_required']
     model_config.document_convention = data['document_convention']
+    model_config.net_params = data["net_params"]
+    model_config.config = data
     return model_config
 
 
@@ -98,9 +113,12 @@ def load_config_from_json(
         config.reset = data['reset']
         config.result_path = data['result_path']
         config.debug = data['debug']
+        config.topic_path = data['topic_path']
+        config.stopword_path = data['stopword_path']
 
         return config
 
 
 if __name__ == "__main__":
     config = load_config_from_json()
+    print(config.stopword_path)
