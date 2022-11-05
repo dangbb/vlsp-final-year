@@ -20,23 +20,12 @@ class Lexrank(Model):
         self.SENTENCES_COUNT = config.params
 
     def training(self, dataset: Dataset) -> None:
-        logging.warning("[MODEL - {}] - Training...".format(self.config.name))
-        all_sentences: List[str] = []
-
-        if self.config.document_convention == 'cluster':
-            for cluster in dataset.clusters:
-                all_sentences.append(' '.join(cluster.get_all_sents()))
-        else:
-            for cluster in dataset.clusters:
-                all_sentences = all_sentences + cluster.get_all_sents()
-
-        self.model = LexRank(all_sentences)
-        logging.warning("[MODEL - {}] - Training complete.".format(self.config.name))
+        pass
 
     def predict(self, cluster: Cluster) -> (List[str], List[float]):
-        if self.model is None:
-            raise Exception("Lexrank hasnt been initiated. Call method training required.")
         all_sents = cluster.get_all_sents()
+
+        self.model = LexRank(all_sents)
 
         sent_count = len(all_sents)
         for SENT_COUNT in self.SENTENCES_COUNT:

@@ -10,6 +10,7 @@ from src.model.mmr_query import MMRQuery
 from src.model.mmr_query_anchor import MMRQueryAnchor
 from src.model.mmr_query_best_title import MMRQueryBestTitle
 from src.model.random_model import RandomModel
+from src.model.sds.combination import CombinationRanker
 from src.model.sds_textrank import SDSTextrankCustom
 from src.model.sds_textrank_mmr import SDSTextrankMMRCustom
 from src.model.textrank import TextrankCustom
@@ -60,6 +61,9 @@ def create_model(config: ModelConfig):
         return model
     elif config.name == 'sds-textrank-mmr':
         model = SDSTextrankMMRCustom(config)
+        return model
+    elif config.name == 'combine-textrank-lexrank-tfidf':
+        model = CombinationRanker(config)
         return model
     else:
         raise Exception('Unsupported model {}'.format(config.name))
