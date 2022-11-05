@@ -10,7 +10,7 @@ import pandas as pd
 
 from src.config.config import Config, load_config_from_json
 from src.evaluate.rouge_evaluator import ScoreSummary
-from src.loader.class_loader import Dataset
+from src.loader.class_loader import Dataset, SOURCE
 from src.utils.factory import create_model, create_evaluator
 
 
@@ -31,6 +31,7 @@ class Pipeline:
         ])
         self.model_config = config.models[model_idx]
         self.eval_config = config.eval_config
+        self.model = None
 
     def training(
             self,
@@ -76,56 +77,69 @@ class Pipeline:
         validate_score_summary = ScoreSummary(validate_run_name)
 
         # create model
-        model = create_model(self.model_config)
+        self.model = create_model(self.model_config)
 
         # create evaluator
         evaluator = create_evaluator(self.eval_config)
 
-        if self.model_config.training_required and dataset is not None:
+        if self.model_config.training_required:
             # is training_required, model is training on full dataset before predicting
-            model.training(dataset)
+            ultimate_dataset = Dataset()
+
+            if dataset is not None:
+                for cluster in dataset.clusters:
+                    ultimate_dataset.add(cluster)
+            if valid_dataset is not None:
+                for cluster in valid_dataset.clusters:
+                    ultimate_dataset.add(cluster)
+            if test_dataset is not None:
+                for cluster in test_dataset.clusters:
+                    ultimate_dataset.add(cluster)
+
+            ultimate_dataset.set_source(SOURCE.SENT_SPLITTED_TOKEN.value)
+            self.model.training(dataset)
 
         # running
         try:
-            logging.warning("[JOB] '{}' - Start training.".format(training_run_name))
-            if dataset is not None:
-
-                dataset.set_source(self.model_config.source)
-                for cluster in tqdm(dataset.clusters):
-                    summary, score = model.predict(cluster)
-
-                    self.train_df = self.train_df.append({
-                        'cluster_id': cluster.cluster_idx,
-                        'score': score,
-                        'summary': '.'.join(summary),
-                    }, ignore_index=True)
-
-                    training_score_summary.add_score(
-                        cluster.cluster_idx,
-                        evaluator(
-                            '.'.join(summary),
-                            '.'.join(cluster.get_summary()),
-                        )
-                    )
-                logging.warning("[JOB] '{}' - Training complete. Saving report.".format(training_run_name))
-
-                training_score_summary.save_report(local_result_path)
-                self.train_df.to_csv(
-                    os.path.join(
-                        local_result_path,
-                        training_run_name + '-score.csv'
-                    ),
-                    index=False
-                )
-
-                logging.warning("[JOB] '{}' - Saving report complete.".format(run_name))
+            # logging.warning("[JOB] '{}' - Start training.".format(training_run_name))
+            # if dataset is not None:
+            #
+            #     dataset.set_source(self.model_config.source)
+            #     for cluster in tqdm(dataset.clusters):
+            #         summary, score = self.model.predict(cluster)
+            #
+            #         self.train_df = self.train_df.append({
+            #             'cluster_id': cluster.cluster_idx,
+            #             'score': score,
+            #             'summary': '.'.join(summary),
+            #         }, ignore_index=True)
+            #
+            #         training_score_summary.add_score(
+            #             cluster.cluster_idx,
+            #             evaluator(
+            #                 '.'.join(summary),
+            #                 '.'.join(cluster.get_summary()),
+            #             )
+            #         )
+            #     logging.warning("[JOB] '{}' - Training complete. Saving report.".format(training_run_name))
+            #
+            #     training_score_summary.save_report(local_result_path)
+            #     self.train_df.to_csv(
+            #         os.path.join(
+            #             local_result_path,
+            #             training_run_name + '-score.csv'
+            #         ),
+            #         index=False
+            #     )
+            #
+            #     logging.warning("[JOB] '{}' - Saving report complete.".format(run_name))
 
             # evaluate in valid set
             if valid_dataset is not None:
                 logging.warning("[JOB] '{}' - Start training on validate set.".format(validate_run_name))
 
                 for cluster in tqdm(valid_dataset.clusters):
-                    summary, score = model.predict(cluster)
+                    summary, score = self.model.predict(cluster)
 
                     self.valid_df = self.valid_df.append({
                         'cluster_id': cluster.cluster_idx,
@@ -156,33 +170,6 @@ class Pipeline:
             else:
                 logging.warning("[JOB] '{}' - Valid dataset not found.".format(validate_run_name))
 
-            # evaluate in test set
-            if test_dataset is not None:
-                logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
-
-                for cluster in tqdm(test_dataset.clusters):
-                    summary, score = model.predict(cluster)
-
-                    self.test_df = self.test_df.append({
-                        'cluster_id': cluster.cluster_idx,
-                        'score': score,
-                        'summary': '.'.join(summary),
-                    }, ignore_index=True)
-
-                logging.warning("[JOB] '{}' - Predict on test complete. Saving report.".format(testing_run_name))
-
-                self.test_df.to_csv(
-                    os.path.join(
-                        local_result_path,
-                        testing_run_name + '-score.csv'
-                    ),
-                    index=False
-                )
-
-                logging.warning("[JOB] '{}' - Saving test report complete.".format(testing_run_name))
-            else:
-                logging.warning("[JOB] '{}' - Test dataset not found.".format(testing_run_name))
-
         except Exception as e:
             print("Run pipeline failed: ", e)
             traceback.print_exc()
@@ -193,13 +180,11 @@ class Pipeline:
             testing_run_name += save_name + '_'
         self.create_result_directory()
 
-        model = create_model(self.model_config)
-
         if test_dataset is not None:
             logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
 
             for cluster in tqdm(test_dataset.clusters):
-                summary, score = model.predict(cluster)
+                summary, score = self.model.predict(cluster)
 
                 self.test_df = self.test_df.append({
                     'cluster_id': cluster.cluster_idx,
@@ -259,14 +244,14 @@ if __name__ == '__main__':
 
     test_path = ""
 
-    # try:
-    #     train_set = load_cluster(
-    #         config.train_path, 1
-    #     )
-    #     logging.warning("[PIPELINE] - Load train set from {}. Done.".format(config.train_path))
-    # except Exception as e:
-    #     train_set = None
-    #     logging.warning("[PIPELINE] - Load train set from {}. Failed. Using None.".format(config.train_path))
+    try:
+        train_set = load_cluster(
+            config.train_path,
+        )
+        logging.warning("[PIPELINE] - Load train set from {}. Done.".format(config.train_path))
+    except Exception as e:
+        train_set = None
+        logging.warning("[PIPELINE] - Load train set from {}. Failed. Using None.".format(config.train_path))
 
     try:
         valid_set = load_cluster(
@@ -286,12 +271,12 @@ if __name__ == '__main__':
         test_set = None
         logging.warning("[PIPELINE] - Load test set from {}. Failed. Using None.".format("/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
 
-    index_set = [1, 11, 12, 14]
+    index_set = [15]
     for idx in index_set:
         try:
             pipeline0 = Pipeline(config, idx)
             try:
-                pipeline0.training(None, valid_set, None)
+                pipeline0.training(train_set, valid_set, test_set)
             except Exception as e:
                 print(e)
             pipeline0.predict(test_set)
