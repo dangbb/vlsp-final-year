@@ -6,3 +6,4 @@
 /dataset/wordnet/
 /external/sentence_transformer/vn_sbert_deploy/
 *.csv
+*.pyc
