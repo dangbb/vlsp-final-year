@@ -227,7 +227,7 @@ if __name__ == '__main__':
     )
 
     pipeline0 = Pipeline(config, 0)
-    # pipeline0.training(train_set)
+    # pipeline0.training(valid_set)
     pipeline0.predict(test_set)
 
     # pipeline0 = Pipeline(config, 1)

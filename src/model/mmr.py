@@ -65,13 +65,16 @@ class MMRSummarizer:
 
 
 class MMR(Model):
-    def __init__(self, config: ModelConfig):
+    def __init__(self, config: ModelConfig, sentences_count=None):
         super(MMR, self).__init__()
         self.embedding: Embedding = get_embedding(config.embedding)
         self.similarity = get_similarity(config.embedding)
         self.summarizer = MMRSummarizer(config)
 
-        self.SENTENCES_COUNT = config.params
+        if sentences_count is None:
+            self.SENTENCES_COUNT = config.params
+        else:
+            self.SENTENCES_COUNT = sentences_count
 
     def predict(self, cluster: Cluster) -> (List[str], List[float]):
         all_sents = cluster.get_all_sents()
