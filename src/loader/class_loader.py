@@ -41,15 +41,41 @@ def len_no_punc(sentence: str):
     return count
 
 
+def deep_cleaning(sentences: List[str], tokenized_sentences: List[str]):
+    new_sentences = []
+    new_tokenized_sentences = []
+
+    assert len(sentences) == len(tokenized_sentences), "mismatch len of sentences {} and {}".format(len(sentences), len(tokenized_sentences))
+
+    for i in range(len(sentences)):
+        new_sentence = sentences[i]
+        new_tokenized_sentence = tokenized_sentences[i]
+
+        # remove empty sentence and sentence contain only punc
+        if not (new_sentence.strip() != '' and new_sentence.strip() not in exclude and not is_punc(new_sentence.strip()) and len_no_punc(new_sentence.strip()) > 10):
+            continue
+        if not (new_tokenized_sentence.strip() != '' and new_tokenized_sentence.strip() not in exclude and not is_punc(
+                new_tokenized_sentence.strip()) and len_no_punc(new_tokenized_sentence.strip()) > 10):
+            continue
+
+        # remove dup
+        if new_sentence in new_sentences:
+            continue
+        if new_tokenized_sentence in new_tokenized_sentences:
+            continue
+
+        new_sentences.append(new_sentence)
+        new_tokenized_sentences.append(new_tokenized_sentence)
+
+    return new_sentences, new_tokenized_sentences
+
+
 def cleaning(sentences: List[str]):
     new_sentences = []
 
-    for sent in sentences:
-        new_sentences.append(''.join([char for char in sent if char not in exclude or char == '_']))
-
     # remove empty sentence and sentence contain only punc
     new_sentences = [
-        sent.strip() for sent in new_sentences if sent.strip() != '' and
+        sent.strip() for sent in sentences if sent.strip() != '' and
                                           sent.strip() not in exclude and
                                           not is_punc(sent.strip()) and
                                           len_no_punc(sent.strip()) > 10
@@ -77,16 +103,15 @@ class TextContainer:
         sent_splitted_text: List[str] = []
         for sentence in self.raw_text:
             sent_splitted_text = sent_splitted_text + sent_tokenize(sentence)
-        self.sent_splitted_text = cleaning(sent_splitted_text)
 
         sent_splitted_token: List[str] = []
-        for sentence in self.sent_splitted_text:
+        for sentence in sent_splitted_text:
             word_tokenized_sent = word_tokenize(sentence, format="text")
             word_tokenized_sent = word_tokenized_sent.split(' ')
             word_tokenized_sent = [word for word in word_tokenized_sent if word not in exclude]
             sent_splitted_token.append(' '.join(word_tokenized_sent))
 
-        self.sent_splitted_token = cleaning(sent_splitted_token)
+        self.sent_splitted_text, self.sent_splitted_token = deep_cleaning(sent_splitted_text, sent_splitted_token)
 
         if len(self.sent_splitted_token) != len(self.sent_splitted_text):
             print("Token:\n", self.sent_splitted_token)
@@ -157,12 +182,14 @@ class Cluster:
         self.documents.append(doc)
 
     def get_all_sents(self) -> List[str]:
+        tokenized_sents: List[str] = []
         sents: List[str] = []
 
         for doc in self.documents:
-            for sent in doc.text_container.__getattribute__(self.source):
-                if sent not in sents:
-                    sents.append(sent)
+            for idx, sent in enumerate(doc.text_container.__getattribute__(self.source)):
+                if doc.text_container.__getattribute__('sent_splitted_token')[idx] not in tokenized_sents:
+                    tokenized_sents.append(doc.text_container.__getattribute__('sent_splitted_token')[idx])
+                    sents.append(doc.text_container.__getattribute__(self.source)[idx])
 
         return sents
 
@@ -292,3 +319,7 @@ if __name__ == "__main__":
     print("Total sen B: ", total_b)
 
     print("All titles: ", dataset.clusters[0].get_all_title())
+
+    dataset.set_source(SOURCE.SENT_SPLITTED_TEXT.value)
+    print(dataset.clusters[0].get_all_sents())
+

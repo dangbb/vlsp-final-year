@@ -6,7 +6,7 @@ import numpy as np
 
 from src.config.config import ModelConfig, load_config_from_json
 from src.evaluate.rouge_evaluator import PipRouge
-from src.loader.class_loader import Cluster
+from src.loader.class_loader import Cluster, SOURCE
 from src.model.model import Model
 from src.utils.embedding import Embedding, get_embedding
 from src.utils.similarity import get_similarity
@@ -88,6 +88,7 @@ class MMRQueryAnchorContext(Model):
         self.SENTENCES_COUNT = config.params
 
     def predict(self, cluster: Cluster) -> (List[str], List[float]):
+        cluster.set_source(SOURCE.SENT_SPLITTED_TEXT.value)
         all_sents = cluster.get_all_sents()
 
         sent_count = len(all_sents)
@@ -117,13 +118,13 @@ class MMRQueryAnchorContext(Model):
 if __name__ == '__main__':
     from src.loader.class_loader import Cluster, load_cluster
 
-    SOURCE = 'sent_splitted_token'
+    SSOURCE = 'sent_splitted_token'
 
     dataset = load_cluster(
         "/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl",
         start=64, end=66,
     )
-    dataset.set_source(SOURCE)
+    dataset.set_source(SSOURCE)
 
     config = load_config_from_json()
     mmr = MMRQueryAnchorContext(config.models[0])
