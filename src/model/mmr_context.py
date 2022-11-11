@@ -121,7 +121,7 @@ if __name__ == '__main__':
     SSOURCE = 'sent_splitted_token'
 
     dataset = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl",
+        "/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl",
         start=64, end=66,
     )
     dataset.set_source(SSOURCE)

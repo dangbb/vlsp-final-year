@@ -297,12 +297,12 @@ if __name__ == '__main__':
 
     try:
         test_set = load_cluster(
-            "/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl",
+            "/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl",
         )
-        logging.warning("[PIPELINE] - Load test set from {}. Done.".format("/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
+        logging.warning("[PIPELINE] - Load test set from {}. Done.".format("/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
     except Exception as e:
         test_set = None
-        logging.warning("[PIPELINE] - Load test set from {}. Failed. Using None.".format("/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
+        logging.warning("[PIPELINE] - Load test set from {}. Failed. Using None.".format("/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
 
     index_set = [1, 9, 10, 11, 12]
     for idx in index_set:

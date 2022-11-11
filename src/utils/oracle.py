@@ -102,4 +102,4 @@ if __name__ == "__main__":
         com, _ = oracle_generator.generate_oracle(dataset.clusters[0])
         print(com)
 
-    # rouge_summary.save_report("/home/dang/vlsp-final-year/data/result")
+    # rouge_summary.save_report("/home/hvn/Documents/dskt/vlsp-final-year/data/result")

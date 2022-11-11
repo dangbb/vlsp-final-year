@@ -21,7 +21,7 @@ class DLConfig:
     def __init__(self):
         self.layers = (32, )
         self.max_iter = 500
-        self.saved_path = "/home/dang/vlsp-final-year/dataset/embedding"
+        self.saved_path = "/home/hvn/Documents/dskt/vlsp-final-year/dataset/embedding"
 
 
 class CustomMLPWithOracle(Model):

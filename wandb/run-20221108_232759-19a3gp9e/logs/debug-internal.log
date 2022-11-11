@@ -1,0 +1,81 @@
+2022-11-08 23:27:59,380 INFO    StreamThr :47952 [internal.py:wandb_internal():88] W&B internal server running at pid: 47952, started at: 2022-11-08 23:27:59.380301
+2022-11-08 23:27:59,381 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: status
+2022-11-08 23:27:59,382 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: status
+2022-11-08 23:27:59,390 DEBUG   SenderThread:47952 [sender.py:send():303] send: header
+2022-11-08 23:27:59,390 INFO    WriterThread:47952 [datastore.py:open_for_write():75] open: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/run-19a3gp9e.wandb
+2022-11-08 23:27:59,536 DEBUG   SenderThread:47952 [sender.py:send():303] send: run
+2022-11-08 23:28:00,191 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: check_version
+2022-11-08 23:28:00,191 INFO    SenderThread:47952 [dir_watcher.py:__init__():216] watching files in: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files
+2022-11-08 23:28:00,191 INFO    SenderThread:47952 [sender.py:_start_run_threads():928] run started: 19a3gp9e with start time 1667924879.37773
+2022-11-08 23:28:00,191 DEBUG   SenderThread:47952 [sender.py:send():303] send: summary
+2022-11-08 23:28:00,192 INFO    SenderThread:47952 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-08 23:28:00,192 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: check_version
+2022-11-08 23:28:00,323 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: run_start
+2022-11-08 23:28:00,325 DEBUG   HandlerThread:47952 [system_info.py:__init__():31] System info init
+2022-11-08 23:28:00,325 DEBUG   HandlerThread:47952 [system_info.py:__init__():46] System info init done
+2022-11-08 23:28:00,325 INFO    HandlerThread:47952 [system_monitor.py:start():150] Starting system monitor
+2022-11-08 23:28:00,325 INFO    SystemMonitor:47952 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2022-11-08 23:28:00,325 INFO    HandlerThread:47952 [system_monitor.py:probe():168] Collecting system info
+2022-11-08 23:28:00,326 INFO    SystemMonitor:47952 [interfaces.py:start():168] Started cpu
+2022-11-08 23:28:00,326 INFO    SystemMonitor:47952 [interfaces.py:start():168] Started disk
+2022-11-08 23:28:00,326 INFO    SystemMonitor:47952 [interfaces.py:start():168] Started gpu
+2022-11-08 23:28:00,326 INFO    SystemMonitor:47952 [interfaces.py:start():168] Started memory
+2022-11-08 23:28:00,327 INFO    SystemMonitor:47952 [interfaces.py:start():168] Started network
+2022-11-08 23:28:00,392 DEBUG   HandlerThread:47952 [system_info.py:probe():195] Probing system
+2022-11-08 23:28:00,395 DEBUG   HandlerThread:47952 [system_info.py:_probe_git():180] Probing git
+2022-11-08 23:28:00,404 DEBUG   HandlerThread:47952 [system_info.py:_probe_git():188] Probing git done
+2022-11-08 23:28:00,404 DEBUG   HandlerThread:47952 [system_info.py:probe():241] Probing system done
+2022-11-08 23:28:00,404 DEBUG   HandlerThread:47952 [system_monitor.py:probe():177] {'os': 'Linux-5.15.0-52-generic-x86_64-with-glibc2.29', 'python': '3.8.10', 'heartbeatAt': '2022-11-08T16:28:00.392096', 'startedAt': '2022-11-08T16:27:59.372785', 'docker': None, 'cuda': None, 'args': None, 'state': 'running', 'program': 'test.ipynb', 'root': '/home/hvn/Documents/dskt/vlsp-final-year', 'git': {'remote': 'https://github.com/dangbb/vlsp-final-year.git', 'commit': '23afdeefb99934e9c629fbf3a7868e9a8084fc2a'}, 'email': '62832264+hvn2706@users.noreply.github.com', 'host': 'hvn', 'username': 'hvn', 'executable': '/home/hvn/python/venvs/venv/bin/python', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 2983.8295, 'min': 800.0, 'max': 4300.0}, 'cpu_freq_per_core': [{'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 3670.753, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}], 'disk': {'total': 239.24888610839844, 'used': 39.00534439086914}, 'gpu': 'NVIDIA GeForce GTX 1650', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce GTX 1650', 'memory_total': 4098621440}], 'memory': {'total': 15.542861938476562}}
+2022-11-08 23:28:00,404 INFO    HandlerThread:47952 [system_monitor.py:probe():178] Finished collecting system info
+2022-11-08 23:28:00,404 INFO    HandlerThread:47952 [system_monitor.py:probe():181] Publishing system info
+2022-11-08 23:28:00,404 DEBUG   HandlerThread:47952 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2022-11-08 23:28:00,405 DEBUG   HandlerThread:47952 [system_info.py:_save_pip():67] Saving pip packages done
+2022-11-08 23:28:00,405 INFO    HandlerThread:47952 [system_monitor.py:probe():183] Finished publishing system info
+2022-11-08 23:28:00,407 DEBUG   SenderThread:47952 [sender.py:send():303] send: files
+2022-11-08 23:28:00,407 INFO    SenderThread:47952 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2022-11-08 23:28:00,413 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:28:00,413 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:28:00,726 DEBUG   SenderThread:47952 [sender.py:send():303] send: telemetry
+2022-11-08 23:28:00,726 DEBUG   SenderThread:47952 [sender.py:send():303] send: config
+2022-11-08 23:28:00,727 DEBUG   SenderThread:47952 [sender.py:send():303] send: metric
+2022-11-08 23:28:00,728 DEBUG   SenderThread:47952 [sender.py:send():303] send: telemetry
+2022-11-08 23:28:00,728 DEBUG   SenderThread:47952 [sender.py:send():303] send: metric
+2022-11-08 23:28:00,728 WARNING SenderThread:47952 [sender.py:send_metric():1127] Seen metric with glob (shouldn't happen)
+2022-11-08 23:28:00,728 DEBUG   SenderThread:47952 [sender.py:send():303] send: telemetry
+2022-11-08 23:28:01,187 INFO    Thread-16 :47952 [upload_job.py:push():143] Uploaded file /tmp/tmptczr247vwandb/ovzf2dip-wandb-metadata.json
+2022-11-08 23:28:01,193 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/wandb-summary.json
+2022-11-08 23:28:01,194 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/requirements.txt
+2022-11-08 23:28:01,194 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/wandb-metadata.json
+2022-11-08 23:28:15,729 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:28:15,729 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:28:31,039 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:28:31,039 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:28:31,205 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/config.yaml
+2022-11-08 23:28:31,205 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/output.log
+2022-11-08 23:28:33,205 INFO    Thread-13 :47952 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/hvn/Documents/dskt/vlsp-final-year/wandb/run-20221108_232759-19a3gp9e/files/output.log
+2022-11-08 23:28:46,330 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:28:46,330 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:29:00,327 DEBUG   SystemMonitor:47952 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2022-11-08 23:29:00,328 DEBUG   SenderThread:47952 [sender.py:send():303] send: stats
+2022-11-08 23:29:01,969 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:29:01,970 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:29:17,313 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:29:17,314 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:29:30,330 DEBUG   SenderThread:47952 [sender.py:send():303] send: stats
+2022-11-08 23:29:32,628 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:29:32,628 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:29:37,045 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: pause
+2022-11-08 23:29:37,045 INFO    HandlerThread:47952 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2022-11-08 23:29:37,045 INFO    HandlerThread:47952 [system_monitor.py:finish():160] Stopping system monitor
+2022-11-08 23:29:37,045 DEBUG   SystemMonitor:47952 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2022-11-08 23:29:37,045 DEBUG   SystemMonitor:47952 [system_monitor.py:_start():141] Publishing last batch of metrics
+2022-11-08 23:29:37,046 INFO    HandlerThread:47952 [interfaces.py:finish():173] Joined cpu
+2022-11-08 23:29:37,046 INFO    HandlerThread:47952 [interfaces.py:finish():173] Joined disk
+2022-11-08 23:29:37,074 INFO    HandlerThread:47952 [interfaces.py:finish():173] Joined gpu
+2022-11-08 23:29:37,074 INFO    HandlerThread:47952 [interfaces.py:finish():173] Joined memory
+2022-11-08 23:29:37,074 INFO    HandlerThread:47952 [interfaces.py:finish():173] Joined network
+2022-11-08 23:29:37,074 DEBUG   SenderThread:47952 [sender.py:send():303] send: stats
+2022-11-08 23:29:47,912 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:29:47,913 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:30:03,327 DEBUG   HandlerThread:47952 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:30:03,327 DEBUG   SenderThread:47952 [sender.py:send_request():317] send_request: stop_status

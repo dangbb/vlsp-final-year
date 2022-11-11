@@ -98,7 +98,7 @@ if __name__ == '__main__':
     SSOURCE = 'sent_splitted_token'
 
     dataset = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
+        "/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
         1,
     )
     print(dataset.clusters[0].documents[0])

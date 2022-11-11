@@ -50,7 +50,7 @@ if __name__ == "__main__":
     from src.loader.class_loader import load_cluster
 
     dataset = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
+        "/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
         1,
     )
 

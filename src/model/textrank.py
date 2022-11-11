@@ -56,7 +56,7 @@ class TextrankCustom(Model):
             else:
                 sent_count = min(int(SENT_COUNT), sent_count)
 
-        _, ratings = self.summarizer(parser.document, sent_count)
+        ratings = self.summarizer(parser.document, sent_count)
 
         assert len(parser.document.sentences) == len(all_sents), \
             "N Sent in doc diff from N sent in cluster, {} != {}".format(
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     SOURCE = 'sent_splitted_token'
 
     dataset = load_cluster(
-        "/home/dang/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
+        "/home/hvn/Documents/dskt/vlsp-final-year/dataset/vlsp_2022_abmusu_train_data_new.jsonl",
         1,
     )
     dataset.set_source(SOURCE)

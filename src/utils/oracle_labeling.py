@@ -96,7 +96,7 @@ if __name__ == "__main__":
     df = pd.DataFrame()
     df["label"] = all_label
 
-    df.to_csv("/home/dang/vlsp-final-year/dataset/embedding/oracle_label_valid.csv", index=False)
+    df.to_csv("/home/hvn/Documents/dskt/vlsp-final-year/dataset/embedding/oracle_label_valid.csv", index=False)
     # training
     dataset = load_cluster(
         Config.load_config_from_json().train_path,
@@ -110,4 +110,4 @@ if __name__ == "__main__":
     df = pd.DataFrame()
     df["label"] = all_label
 
-    df.to_csv("/home/dang/vlsp-final-year/dataset/embedding/oracle_label_train.csv", index=False)
+    df.to_csv("/home/hvn/Documents/dskt/vlsp-final-year/dataset/embedding/oracle_label_train.csv", index=False)

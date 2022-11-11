@@ -51,7 +51,7 @@ class Config:
 
     @staticmethod
     def load_config_from_json(
-            path: str = '/home/dang/vlsp-final-year/env.json'
+            path: str = '/home/hvn/Documents/dskt/vlsp-final-year/env.json'
     ):
         return load_config_from_json(path)
 
@@ -90,7 +90,7 @@ def parse_model_config(data) -> ModelConfig:
 
 
 def load_config_from_json(
-        path: str = '/home/dang/vlsp-final-year/env.json'
+        path: str = '/home/hvn/Documents/dskt/vlsp-final-year/env.json'
 ) -> Config:
     import json
 

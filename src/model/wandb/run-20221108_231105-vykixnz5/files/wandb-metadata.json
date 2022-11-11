@@ -1,0 +1,105 @@
+{
+    "os": "Linux-5.15.0-52-generic-x86_64-with-glibc2.29",
+    "python": "3.8.10",
+    "heartbeatAt": "2022-11-08T16:11:07.297601",
+    "startedAt": "2022-11-08T16:11:05.548301",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/hvn/Documents/dskt/vlsp-final-year/src/model/vit5.py",
+    "codePath": "src/model/vit5.py",
+    "git": {
+        "remote": "https://github.com/dangbb/vlsp-final-year.git",
+        "commit": "23afdeefb99934e9c629fbf3a7868e9a8084fc2a"
+    },
+    "email": "62832264+hvn2706@users.noreply.github.com",
+    "root": "/home/hvn/Documents/dskt/vlsp-final-year",
+    "host": "hvn",
+    "username": "hvn",
+    "executable": "/home/hvn/python/venvs/venv/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2987.9162499999998,
+        "min": 800.0,
+        "max": 4300.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3954.995,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 2900.0,
+            "min": 800.0,
+            "max": 4300.0
+        }
+    ],
+    "disk": {
+        "total": 239.24888610839844,
+        "used": 38.901058197021484
+    },
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1650",
+            "memory_total": 4098621440
+        }
+    ],
+    "memory": {
+        "total": 15.542861938476562
+    }
+}

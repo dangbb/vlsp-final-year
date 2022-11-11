@@ -1,0 +1,22 @@
+  0%|          | 0/1 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/home/hvn/Documents/dskt/vlsp-final-year/src/model/vit5.py", line 132, in <module>
+    vit5.training(train_dataset, val_dataset)
+  File "/home/hvn/Documents/dskt/vlsp-final-year/src/model/vit5.py", line 107, in training
+    trainer.train()
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/transformers/trainer.py", line 1498, in train
+    return inner_training_loop(
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/transformers/trainer.py", line 1714, in _inner_training_loop
+    for step, inputs in enumerate(epoch_iterator):
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 628, in __next__
+    data = self._next_data()
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 671, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 61, in fetch
+    return self.collate_fn(data)
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/transformers/trainer_utils.py", line 697, in __call__
+    return self.data_collator(features)
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/transformers/data/data_collator.py", line 586, in __call__
+    features = self.tokenizer.pad(
+  File "/home/hvn/python/venvs/venv/lib/python3.8/site-packages/transformers/tokenization_utils_base.py", line 2835, in pad
+    raise ValueError(
+ValueError: You should supply an encoding or a list of encodings to this method that includes input_ids, but you provided ['labels']

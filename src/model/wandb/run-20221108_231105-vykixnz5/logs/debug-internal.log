@@ -1,0 +1,173 @@
+2022-11-08 23:11:05,577 INFO    StreamThr :46565 [internal.py:wandb_internal():88] W&B internal server running at pid: 46565, started at: 2022-11-08 23:11:05.576871
+2022-11-08 23:11:05,582 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: status
+2022-11-08 23:11:05,583 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: status
+2022-11-08 23:11:05,585 DEBUG   SenderThread:46565 [sender.py:send():303] send: header
+2022-11-08 23:11:05,585 INFO    WriterThread:46565 [datastore.py:open_for_write():75] open: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/run-vykixnz5.wandb
+2022-11-08 23:11:05,700 DEBUG   SenderThread:46565 [sender.py:send():303] send: run
+2022-11-08 23:11:06,982 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: check_version
+2022-11-08 23:11:06,997 INFO    SenderThread:46565 [dir_watcher.py:__init__():216] watching files in: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files
+2022-11-08 23:11:06,998 INFO    SenderThread:46565 [sender.py:_start_run_threads():928] run started: vykixnz5 with start time 1667923865.567671
+2022-11-08 23:11:06,998 DEBUG   SenderThread:46565 [sender.py:send():303] send: summary
+2022-11-08 23:11:06,999 INFO    SenderThread:46565 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-08 23:11:07,000 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: check_version
+2022-11-08 23:11:07,255 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: run_start
+2022-11-08 23:11:07,264 DEBUG   HandlerThread:46565 [system_info.py:__init__():31] System info init
+2022-11-08 23:11:07,264 DEBUG   HandlerThread:46565 [system_info.py:__init__():46] System info init done
+2022-11-08 23:11:07,264 INFO    HandlerThread:46565 [system_monitor.py:start():150] Starting system monitor
+2022-11-08 23:11:07,264 INFO    SystemMonitor:46565 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2022-11-08 23:11:07,265 INFO    HandlerThread:46565 [system_monitor.py:probe():168] Collecting system info
+2022-11-08 23:11:07,266 INFO    SystemMonitor:46565 [interfaces.py:start():168] Started cpu
+2022-11-08 23:11:07,267 INFO    SystemMonitor:46565 [interfaces.py:start():168] Started disk
+2022-11-08 23:11:07,270 INFO    SystemMonitor:46565 [interfaces.py:start():168] Started gpu
+2022-11-08 23:11:07,271 INFO    SystemMonitor:46565 [interfaces.py:start():168] Started memory
+2022-11-08 23:11:07,273 INFO    SystemMonitor:46565 [interfaces.py:start():168] Started network
+2022-11-08 23:11:07,297 DEBUG   HandlerThread:46565 [system_info.py:probe():195] Probing system
+2022-11-08 23:11:07,301 DEBUG   HandlerThread:46565 [system_info.py:_probe_git():180] Probing git
+2022-11-08 23:11:07,309 DEBUG   HandlerThread:46565 [system_info.py:_probe_git():188] Probing git done
+2022-11-08 23:11:07,309 DEBUG   HandlerThread:46565 [system_info.py:probe():241] Probing system done
+2022-11-08 23:11:07,309 DEBUG   HandlerThread:46565 [system_monitor.py:probe():177] {'os': 'Linux-5.15.0-52-generic-x86_64-with-glibc2.29', 'python': '3.8.10', 'heartbeatAt': '2022-11-08T16:11:07.297601', 'startedAt': '2022-11-08T16:11:05.548301', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/home/hvn/Documents/dskt/vlsp-final-year/src/model/vit5.py', 'codePath': 'src/model/vit5.py', 'git': {'remote': 'https://github.com/dangbb/vlsp-final-year.git', 'commit': '23afdeefb99934e9c629fbf3a7868e9a8084fc2a'}, 'email': '62832264+hvn2706@users.noreply.github.com', 'root': '/home/hvn/Documents/dskt/vlsp-final-year', 'host': 'hvn', 'username': 'hvn', 'executable': '/home/hvn/python/venvs/venv/bin/python', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 2987.9162499999998, 'min': 800.0, 'max': 4300.0}, 'cpu_freq_per_core': [{'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 3954.995, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}, {'current': 2900.0, 'min': 800.0, 'max': 4300.0}], 'disk': {'total': 239.24888610839844, 'used': 38.901058197021484}, 'gpu': 'NVIDIA GeForce GTX 1650', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce GTX 1650', 'memory_total': 4098621440}], 'memory': {'total': 15.542861938476562}}
+2022-11-08 23:11:07,309 INFO    HandlerThread:46565 [system_monitor.py:probe():178] Finished collecting system info
+2022-11-08 23:11:07,309 INFO    HandlerThread:46565 [system_monitor.py:probe():181] Publishing system info
+2022-11-08 23:11:07,309 DEBUG   HandlerThread:46565 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2022-11-08 23:11:07,310 DEBUG   HandlerThread:46565 [system_info.py:_save_pip():67] Saving pip packages done
+2022-11-08 23:11:07,310 INFO    HandlerThread:46565 [system_monitor.py:probe():183] Finished publishing system info
+2022-11-08 23:11:07,313 DEBUG   SenderThread:46565 [sender.py:send():303] send: files
+2022-11-08 23:11:07,313 INFO    SenderThread:46565 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2022-11-08 23:11:07,316 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: stop_status
+2022-11-08 23:11:07,316 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: stop_status
+2022-11-08 23:11:07,698 DEBUG   SenderThread:46565 [sender.py:send():303] send: telemetry
+2022-11-08 23:11:07,699 DEBUG   SenderThread:46565 [sender.py:send():303] send: config
+2022-11-08 23:11:07,701 DEBUG   SenderThread:46565 [sender.py:send():303] send: metric
+2022-11-08 23:11:07,701 DEBUG   SenderThread:46565 [sender.py:send():303] send: telemetry
+2022-11-08 23:11:07,702 DEBUG   SenderThread:46565 [sender.py:send():303] send: metric
+2022-11-08 23:11:07,704 WARNING SenderThread:46565 [sender.py:send_metric():1127] Seen metric with glob (shouldn't happen)
+2022-11-08 23:11:07,705 DEBUG   SenderThread:46565 [sender.py:send():303] send: telemetry
+2022-11-08 23:11:07,709 DEBUG   SenderThread:46565 [sender.py:send():303] send: exit
+2022-11-08 23:11:07,709 INFO    SenderThread:46565 [sender.py:send_exit():442] handling exit code: 1
+2022-11-08 23:11:07,710 INFO    SenderThread:46565 [sender.py:send_exit():444] handling runtime: 0
+2022-11-08 23:11:07,711 INFO    SenderThread:46565 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-08 23:11:07,711 INFO    SenderThread:46565 [sender.py:send_exit():450] send defer
+2022-11-08 23:11:07,712 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,712 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 0
+2022-11-08 23:11:07,712 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,713 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 0
+2022-11-08 23:11:07,713 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 1
+2022-11-08 23:11:07,713 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,714 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 1
+2022-11-08 23:11:07,714 INFO    HandlerThread:46565 [system_monitor.py:finish():160] Stopping system monitor
+2022-11-08 23:11:07,715 DEBUG   SystemMonitor:46565 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2022-11-08 23:11:07,716 DEBUG   SystemMonitor:46565 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2022-11-08 23:11:07,716 DEBUG   SystemMonitor:46565 [system_monitor.py:_start():141] Publishing last batch of metrics
+2022-11-08 23:11:07,718 INFO    HandlerThread:46565 [interfaces.py:finish():173] Joined cpu
+2022-11-08 23:11:07,719 INFO    HandlerThread:46565 [interfaces.py:finish():173] Joined disk
+2022-11-08 23:11:07,777 INFO    HandlerThread:46565 [interfaces.py:finish():173] Joined gpu
+2022-11-08 23:11:07,777 INFO    HandlerThread:46565 [interfaces.py:finish():173] Joined memory
+2022-11-08 23:11:07,777 INFO    HandlerThread:46565 [interfaces.py:finish():173] Joined network
+2022-11-08 23:11:07,777 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,777 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 1
+2022-11-08 23:11:07,777 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 2
+2022-11-08 23:11:07,778 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,778 DEBUG   SenderThread:46565 [sender.py:send():303] send: stats
+2022-11-08 23:11:07,778 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 2
+2022-11-08 23:11:07,778 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,778 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 2
+2022-11-08 23:11:07,778 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 3
+2022-11-08 23:11:07,778 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,778 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 3
+2022-11-08 23:11:07,778 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,778 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 3
+2022-11-08 23:11:07,778 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 4
+2022-11-08 23:11:07,779 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,779 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 4
+2022-11-08 23:11:07,779 DEBUG   SenderThread:46565 [sender.py:send():303] send: summary
+2022-11-08 23:11:07,779 INFO    SenderThread:46565 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-11-08 23:11:07,779 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,779 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 4
+2022-11-08 23:11:07,779 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 5
+2022-11-08 23:11:07,779 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:07,779 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 5
+2022-11-08 23:11:07,779 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:07,779 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 5
+2022-11-08 23:11:08,002 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/wandb-metadata.json
+2022-11-08 23:11:08,003 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/wandb-summary.json
+2022-11-08 23:11:08,003 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/output.log
+2022-11-08 23:11:08,004 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_created():275] file/dir created: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/requirements.txt
+2022-11-08 23:11:08,245 INFO    Thread-16 :46565 [upload_job.py:push():143] Uploaded file /tmp/tmpjswkhw5gwandb/2zeca0tv-wandb-metadata.json
+2022-11-08 23:11:08,341 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:08,557 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 6
+2022-11-08 23:11:08,557 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:08,558 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:08,558 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 6
+2022-11-08 23:11:08,558 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:08,558 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 6
+2022-11-08 23:11:08,999 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/config.yaml
+2022-11-08 23:11:09,342 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:09,725 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 7
+2022-11-08 23:11:09,725 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:09,727 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:09,727 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 7
+2022-11-08 23:11:09,728 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:09,728 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 7
+2022-11-08 23:11:09,729 INFO    SenderThread:46565 [dir_watcher.py:finish():362] shutting down directory watcher
+2022-11-08 23:11:10,000 INFO    Thread-13 :46565 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/output.log
+2022-11-08 23:11:10,001 INFO    SenderThread:46565 [dir_watcher.py:finish():392] scan: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files
+2022-11-08 23:11:10,002 INFO    SenderThread:46565 [dir_watcher.py:finish():406] scan save: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/wandb-summary.json wandb-summary.json
+2022-11-08 23:11:10,002 INFO    SenderThread:46565 [dir_watcher.py:finish():406] scan save: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/wandb-metadata.json wandb-metadata.json
+2022-11-08 23:11:10,003 INFO    SenderThread:46565 [dir_watcher.py:finish():406] scan save: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/output.log output.log
+2022-11-08 23:11:10,003 INFO    SenderThread:46565 [dir_watcher.py:finish():406] scan save: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/requirements.txt requirements.txt
+2022-11-08 23:11:10,004 INFO    SenderThread:46565 [dir_watcher.py:finish():406] scan save: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/config.yaml config.yaml
+2022-11-08 23:11:10,022 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 8
+2022-11-08 23:11:10,023 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:10,025 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 8
+2022-11-08 23:11:10,032 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:10,033 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 8
+2022-11-08 23:11:10,037 INFO    SenderThread:46565 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-08 23:11:10,343 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:10,343 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:10,863 INFO    Thread-20 :46565 [upload_job.py:push():143] Uploaded file /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/config.yaml
+2022-11-08 23:11:10,877 INFO    Thread-17 :46565 [upload_job.py:push():143] Uploaded file /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/wandb-summary.json
+2022-11-08 23:11:10,907 INFO    Thread-19 :46565 [upload_job.py:push():143] Uploaded file /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/requirements.txt
+2022-11-08 23:11:11,343 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:11,343 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:11,372 INFO    Thread-18 :46565 [upload_job.py:push():143] Uploaded file /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/files/output.log
+2022-11-08 23:11:11,573 INFO    Thread-12 :46565 [sender.py:transition_state():463] send defer: 9
+2022-11-08 23:11:11,574 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:11,574 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 9
+2022-11-08 23:11:11,574 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:11,575 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 9
+2022-11-08 23:11:11,575 INFO    SenderThread:46565 [file_pusher.py:join():173] waiting for file pusher
+2022-11-08 23:11:11,575 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 10
+2022-11-08 23:11:11,576 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:11,576 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 10
+2022-11-08 23:11:11,576 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:11,576 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 10
+2022-11-08 23:11:11,883 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 11
+2022-11-08 23:11:11,883 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:11,884 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 11
+2022-11-08 23:11:11,884 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:11,884 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 11
+2022-11-08 23:11:11,885 INFO    SenderThread:46565 [sender.py:transition_state():463] send defer: 12
+2022-11-08 23:11:11,886 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: defer
+2022-11-08 23:11:11,886 INFO    HandlerThread:46565 [handler.py:handle_request_defer():162] handle defer: 12
+2022-11-08 23:11:11,887 DEBUG   SenderThread:46565 [sender.py:send():303] send: final
+2022-11-08 23:11:11,887 DEBUG   SenderThread:46565 [sender.py:send():303] send: footer
+2022-11-08 23:11:11,887 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: defer
+2022-11-08 23:11:11,887 INFO    SenderThread:46565 [sender.py:send_request_defer():459] handle sender defer: 12
+2022-11-08 23:11:11,890 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:11,891 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:11,891 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: poll_exit
+2022-11-08 23:11:11,892 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: poll_exit
+2022-11-08 23:11:11,894 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: server_info
+2022-11-08 23:11:11,895 DEBUG   SenderThread:46565 [sender.py:send_request():317] send_request: server_info
+2022-11-08 23:11:11,897 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: get_summary
+2022-11-08 23:11:11,897 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: sampled_history
+2022-11-08 23:11:12,809 INFO    MainThread:46565 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-11-08 23:11:12,809 INFO    MainThread:46565 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-11-08 23:11:12,809 INFO    MainThread:46565 [wandb_run.py:_footer_sync_info():3333] logging synced files
+2022-11-08 23:11:12,810 DEBUG   HandlerThread:46565 [handler.py:handle_request():139] handle_request: shutdown
+2022-11-08 23:11:12,811 INFO    HandlerThread:46565 [handler.py:finish():814] shutting down handler
+2022-11-08 23:11:12,888 INFO    WriterThread:46565 [datastore.py:close():279] close: /home/hvn/Documents/dskt/vlsp-final-year/src/model/wandb/run-20221108_231105-vykixnz5/run-vykixnz5.wandb
+2022-11-08 23:11:13,808 INFO    SenderThread:46565 [sender.py:finish():1331] shutting down sender
+2022-11-08 23:11:13,808 INFO    SenderThread:46565 [file_pusher.py:finish():168] shutting down file pusher
+2022-11-08 23:11:13,809 INFO    SenderThread:46565 [file_pusher.py:join():173] waiting for file pusher
+2022-11-08 23:11:13,815 INFO    MainThread:46565 [internal.py:handle_exit():78] Internal process exited

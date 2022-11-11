@@ -12,7 +12,7 @@ def get_stats_by_topic(dataset: Dataset, saved_path: str, word_frequency_folder_
     import spacy
     nlp = spacy.load('vi_core_news_lg')
 
-    stopwords = stopword_reader("/home/dang/vlsp-final-year/data/stopword/vietnamese.txt")
+    stopwords = stopword_reader("/home/hvn/Documents/dskt/vlsp-final-year/data/stopword/vietnamese.txt")
 
     topics = []
     for cluster in dataset.clusters:
@@ -132,4 +132,4 @@ if __name__ == '__main__':
         config.train_path
     )
 
-    get_stats_by_topic(train_set, "/home/dang/vlsp-final-year/data", "term_freq")
+    get_stats_by_topic(train_set, "/home/hvn/Documents/dskt/vlsp-final-year/data", "term_freq")
