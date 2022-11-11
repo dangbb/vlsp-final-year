@@ -111,7 +111,7 @@ class CombinationRanker:
             if len(sents) >= sent_count:
                 idx = np.argpartition(scores, -sent_count)[-sent_count:]
             else:
-                idx = list(range(1, len(sents)))
+                idx = list(range(len(sents)))
             final_sents = final_sents + [sents[i] for i in idx]
 
         final_sents = [sent.replace("_", " ") for sent in final_sents]

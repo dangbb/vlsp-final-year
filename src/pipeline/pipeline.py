@@ -4,6 +4,7 @@ import argparse
 
 import traceback
 
+import numpy as np
 from tqdm import tqdm
 
 import pandas as pd
@@ -72,6 +73,7 @@ class Pipeline:
         local_result_path = os.path.join(self.config.result_path, run_name)
         if not os.path.exists(local_result_path):
             os.mkdir(local_result_path)
+            os.mkdir(local_result_path)
 
         training_score_summary = ScoreSummary(training_run_name)
         validate_score_summary = ScoreSummary(validate_run_name)
@@ -137,9 +139,15 @@ class Pipeline:
             # evaluate in valid set
             if valid_dataset is not None:
                 logging.warning("[JOB] '{}' - Start training on validate set.".format(validate_run_name))
+                valid_dataset.set_source(self.model_config.source)
 
-                for cluster in tqdm(valid_dataset.clusters):
+                for idx, cluster in tqdm(enumerate(valid_dataset.clusters)):
                     summary, score = self.model.predict(cluster)
+
+                    cluster.set_source(SOURCE.SENT_SPLITTED_TOKEN.value)
+                    chosen_idx = np.argpartition(score, -len(summary))[-len(summary):]
+                    sents = cluster.get_all_sents()
+                    summary = [sents[idx] for idx in chosen_idx]
 
                     self.valid_df = self.valid_df.append({
                         'cluster_id': cluster.cluster_idx,
@@ -147,6 +155,11 @@ class Pipeline:
                         'summary': '.'.join(summary),
                     }, ignore_index=True)
 
+                    chosen_sent_idx = np.argpartition(score, -len(summary))[-len(summary):]
+
+                    cluster.set_source(SOURCE.SENT_SPLITTED_TOKEN.value)
+                    sents = cluster.get_all_sents()
+                    summary = [sents[i] for i in chosen_sent_idx]
                     validate_score_summary.add_score(
                         cluster.cluster_idx,
                         evaluator(
@@ -154,6 +167,10 @@ class Pipeline:
                             '.'.join(cluster.get_summary()),
                         )
                     )
+
+                    if idx == 0:
+                        print("pred:\n", '.'.join(summary))
+                        print("gold:\n", '.'.join(cluster.get_summary()))
 
                 logging.warning("[JOB] '{}' - Training on valid set complete. Saving report.".format(validate_run_name))
 
@@ -181,16 +198,32 @@ class Pipeline:
         self.create_result_directory()
 
         if test_dataset is not None:
+            test_dataset.set_source(self.model_config.source)
             logging.warning("[JOB] '{}' - Start predict on test.".format(testing_run_name))
 
             for cluster in tqdm(test_dataset.clusters):
                 summary, score = self.model.predict(cluster)
+
+                self.valid_df = self.valid_df.append({
+                    'cluster_id': cluster.cluster_idx,
+                    'score': score,
+                    'summary': '.'.join(summary),
+                }, ignore_index=True)
+
+                chosen_sent_idx = np.argpartition(score, -len(summary))[-len(summary):]
+
+                cluster.set_source(SOURCE.SENT_SPLITTED_TEXT.value)
+                sents = cluster.get_all_sents()
+                summary = [sents[i] for i in chosen_sent_idx]
 
                 self.test_df = self.test_df.append({
                     'cluster_id': cluster.cluster_idx,
                     'score': score,
                     'summary': '.'.join(summary),
                 }, ignore_index=True)
+
+                if idx == 0:
+                    print("pred:\n", '.'.join(summary))
 
             logging.warning("[JOB] '{}' - Predict on test complete. Saving report.".format(testing_run_name))
 
@@ -271,7 +304,7 @@ if __name__ == '__main__':
         test_set = None
         logging.warning("[PIPELINE] - Load test set from {}. Failed. Using None.".format("/home/dang/vlsp-final-year/dataset/vlsp_abmusu_test_data.jsonl"))
 
-    index_set = [15]
+    index_set = [1, 9, 10, 11, 12]
     for idx in index_set:
         try:
             pipeline0 = Pipeline(config, idx)

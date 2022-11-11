@@ -5,7 +5,7 @@ from tqdm import tqdm
 import json
 import string
 
-from underthesea import word_tokenize, sent_tokenize
+from underthesea import word_tokenize, sent_tokenize, ner
 from typing import List
 
 from src.config.config import Config
@@ -17,6 +17,9 @@ exclude.add('…')
 
 from enum import Enum
 
+import spacy
+
+nlp = spacy.load('vi_core_news_lg')
 
 class SOURCE(Enum):
     RAW_TEXT = 'raw_text'
@@ -41,18 +44,44 @@ def len_no_punc(sentence: str):
     return count
 
 
-def cleaning(sentences: List[str]):
+def deep_cleaning(sentences: List[str], tokenized_sentences: List[str]):
     new_sentences = []
+    new_tokenized_sentences = []
 
-    for sent in sentences:
-        new_sentences.append(''.join([char for char in sent if char not in exclude or char == '_']))
+    assert len(sentences) == len(tokenized_sentences), "mismatch len of sentences {} and {}".format(len(sentences),
+                                                                                                    len(tokenized_sentences))
 
+    for i in range(len(sentences)):
+        new_sentence = sentences[i]
+        new_tokenized_sentence = tokenized_sentences[i]
+
+        # remove empty sentence and sentence contain only punc
+        if not (new_sentence.strip() != '' and new_sentence.strip() not in exclude and not is_punc(
+                new_sentence.strip()) and len_no_punc(new_sentence.strip()) > 10):
+            continue
+        if not (new_tokenized_sentence.strip() != '' and new_tokenized_sentence.strip() not in exclude and not is_punc(
+                new_tokenized_sentence.strip()) and len_no_punc(new_tokenized_sentence.strip()) > 10):
+            continue
+
+        # remove dup
+        if new_sentence in new_sentences:
+            continue
+        if new_tokenized_sentence in new_tokenized_sentences:
+            continue
+
+        new_sentences.append(new_sentence)
+        new_tokenized_sentences.append(new_tokenized_sentence)
+
+    return new_sentences, new_tokenized_sentences
+
+
+def cleaning(sentences: List[str]):
     # remove empty sentence and sentence contain only punc
     new_sentences = [
-        sent.strip() for sent in new_sentences if sent.strip() != '' and
-                                          sent.strip() not in exclude and
-                                          not is_punc(sent.strip()) and
-                                          len_no_punc(sent.strip()) > 10
+        sent.strip() for sent in sentences if sent.strip() != '' and
+                                              sent.strip() not in exclude and
+                                              not is_punc(sent.strip()) and
+                                              len_no_punc(sent.strip()) > 10
     ]
     # remove dup
     new_sentences = list(dict.fromkeys(new_sentences))
@@ -74,19 +103,91 @@ class TextContainer:
             word_tokenized_sent = [word for word in word_tokenized_sent if word not in exclude]
             tokenized_text.append(' '.join(word_tokenized_sent))
 
+        def split_sent(sents, token):
+            splitted_sent = []
+            for sent in sents:
+                splitted_sent = splitted_sent + sent.split(token)
+            return splitted_sent
+
         sent_splitted_text: List[str] = []
         for sentence in self.raw_text:
-            sent_splitted_text = sent_splitted_text + sent_tokenize(sentence)
-        self.sent_splitted_text = cleaning(sent_splitted_text)
+            sents = sent_tokenize(sentence)
+            sent_split_coarse = split_sent(split_sent(split_sent(split_sent(sents, ':'), ';'), '...'), '…')
+
+            for sent in sent_split_coarse:
+                words = word_tokenize(sent)
+
+                anchor = -9999
+                token = []
+                for j, word in enumerate(words):
+                    if word == ',':
+                        if j - anchor <= 3:
+                            while len(token) > 0 and token[-1] != ',':
+                                token = token[:-1]
+                            if len(token) > 0 and token[-1] == ',':
+                                token = token[:-1]
+                        token.append(word)
+                        anchor = j
+                    else:
+                        token.append(word)
+
+                sent_splitted_text.append(' '.join(token))
+
+        def parseSent(rootid, edges, tokens):
+            stack = []
+            sents = []
+
+            def traversal(idx):
+                stack.append(idx)
+
+                for next_idx in edges[idx]:
+                    traversal(next_idx)
+
+            for idx in edges[rootid]:
+                traversal(idx)
+
+                stack = sorted(stack)
+                sents.append(' '.join([tokens[i] for i in stack]))
+                stack = []
+
+            return sents
+
+        sent_splitted_text = cleaning(sent_splitted_text)
+
+        new_sent_splitted_text = []
+        for sent in sent_splitted_text:
+            doc = nlp(sent)
+            if len(doc) < 20:
+                new_sent_splitted_text.append(sent)
+                continue
+
+            tokens = []
+            edges = []
+            rootid = -1
+
+            for i, token in enumerate(doc):
+                tokens.append(token.text)
+                if token.dep_ == "ROOT":
+                    rootid = i
+
+                edges.append([child.i for child in token.children])
+
+            new_sent_splitted_text = new_sent_splitted_text + parseSent(rootid, edges, tokens)
 
         sent_splitted_token: List[str] = []
-        for sentence in self.sent_splitted_text:
+        for sentence in sent_splitted_text:
             word_tokenized_sent = word_tokenize(sentence, format="text")
             word_tokenized_sent = word_tokenized_sent.split(' ')
-            word_tokenized_sent = [word for word in word_tokenized_sent if word not in exclude]
-            sent_splitted_token.append(' '.join(word_tokenized_sent))
 
-        self.sent_splitted_token = cleaning(sent_splitted_token)
+            new_word_tokenized_sent = []
+            for idx, word in enumerate(word_tokenized_sent):
+                if word in exclude:
+                    continue
+                new_word_tokenized_sent.append(word)
+
+            sent_splitted_token.append(' '.join(new_word_tokenized_sent))
+
+        self.sent_splitted_text, self.sent_splitted_token = deep_cleaning(sent_splitted_text, sent_splitted_token)
 
         if len(self.sent_splitted_token) != len(self.sent_splitted_text):
             print("Token:\n", self.sent_splitted_token)
@@ -157,12 +258,14 @@ class Cluster:
         self.documents.append(doc)
 
     def get_all_sents(self) -> List[str]:
+        tokenized_sents: List[str] = []
         sents: List[str] = []
 
         for doc in self.documents:
-            for sent in doc.text_container.__getattribute__(self.source):
-                if sent not in sents:
-                    sents.append(sent)
+            for idx, sent in enumerate(doc.text_container.__getattribute__(self.source)):
+                if doc.text_container.__getattribute__('sent_splitted_token')[idx] not in tokenized_sents:
+                    tokenized_sents.append(doc.text_container.__getattribute__('sent_splitted_token')[idx])
+                    sents.append(doc.text_container.__getattribute__(self.source)[idx])
 
         return sents
 
@@ -252,7 +355,7 @@ def load_cluster(path: str, n_cluster: int = -1, start: int = -1, end: int = -1)
 
 if __name__ == "__main__":
     dataset = load_cluster(
-        Config.load_config_from_json().train_path, 2
+        Config.load_config_from_json().train_path,
     )
 
     min_len = 1000
@@ -292,3 +395,6 @@ if __name__ == "__main__":
     print("Total sen B: ", total_b)
 
     print("All titles: ", dataset.clusters[0].get_all_title())
+
+    dataset.set_source(SOURCE.SENT_SPLITTED_TEXT.value)
+    print(dataset.clusters[0].get_all_sents())
