@@ -9,7 +9,7 @@ In project root directory,
 ```commandline
 cd external/sentence_transformer/
 gdown https://drive.google.com/a/gm.uit.edu.vn/uc?id=1pXJZ9eHp6DWkQ5MhCzmWYsKyLQEDiodz&export=download
-tar xzf /content/vn_sbert_deploy.tar.gz
+tar xzf vn_sbert_deploy.tar.gz
 ```
 
 ## Install VnCodeNLP
