@@ -17,10 +17,6 @@ exclude.add('…')
 
 from enum import Enum
 
-import spacy
-
-nlp = spacy.load('vi_core_news_lg')
-
 class SOURCE(Enum):
     RAW_TEXT = 'raw_text'
     TOKENIZED_TEXT = 'tokenized_text'
@@ -154,25 +150,7 @@ class TextContainer:
 
         sent_splitted_text = cleaning(sent_splitted_text)
 
-        new_sent_splitted_text = []
-        for sent in sent_splitted_text:
-            doc = nlp(sent)
-            if len(doc) < 20:
-                new_sent_splitted_text.append(sent)
-                continue
-
-            tokens = []
-            edges = []
-            rootid = -1
-
-            for i, token in enumerate(doc):
-                tokens.append(token.text)
-                if token.dep_ == "ROOT":
-                    rootid = i
-
-                edges.append([child.i for child in token.children])
-
-            new_sent_splitted_text = new_sent_splitted_text + parseSent(rootid, edges, tokens)
+        new_sent_splitted_text = sent_splitted_text
 
         sent_splitted_token: List[str] = []
         for sentence in sent_splitted_text:
